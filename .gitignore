@@ -30,5 +30,6 @@ hs_err_pid*
 *.db
 
 3-cookbook-domain/target
-
-
+2-cookbook-application/target
+1-cookbook-adapters/target
+0-cookbook-plugin-database/target
