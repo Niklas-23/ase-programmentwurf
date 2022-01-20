@@ -13,7 +13,7 @@ public class Database {
         try {
             connection = DriverManager.getConnection(url);
         } catch (SQLException e) {
-            System.err.println(e.getMessage());
+            System.err.println("SQL ERROR: " + e.getMessage());
         }
         return connection;
     }
@@ -61,11 +61,14 @@ public class Database {
                 + "	CONSTRAINT pk_review PRIMARY KEY (username, recipeId) \n"
                 + ");");
 
-        try (Connection connection = DriverManager.getConnection(url); Statement stmt = connection.createStatement()) {
+        try (Connection connection = getConnection()) {
+            Statement stmt = connection.createStatement();
             for (String sqlStatement : createTables) {
                 stmt.execute(sqlStatement);
             }
         } catch (SQLException e) {
+            System.err.println("SQL ERROR: " + e.getMessage());
+        } catch (Exception e) {
             System.err.println(e.getMessage());
         }
     }
@@ -79,7 +82,9 @@ public class Database {
                 System.out.println(tablesResultSet.getString("TABLE_NAME"));
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+            System.err.println("SQL ERROR: " + e.getMessage());
+        } catch (Exception e) {
+            System.err.println(e.getMessage());
         }
     }
 
@@ -87,11 +92,14 @@ public class Database {
         List<String> insertDemoData = new LinkedList<>();
         insertDemoData.add("INSERT INTO user(username) VALUES('Niklas123'),('Max1'),('Muster12345')");
         insertDemoData.add("INSERT INTO recipe(recipeName, username) VALUES('Pizza','family', 45, '1. Teig dann backen','Niklas123')");
-        try (Connection connection = getConnection(); Statement stmt = connection.createStatement()) {
+        try (Connection connection = getConnection()) {
+            Statement stmt = connection.createStatement();
             for (String sqlStatement : insertDemoData) {
                 stmt.execute(sqlStatement);
             }
         } catch (SQLException e) {
+            System.err.println("SQL ERROR: " + e.getMessage());
+        } catch (Exception e) {
             System.err.println(e.getMessage());
         }
     }
