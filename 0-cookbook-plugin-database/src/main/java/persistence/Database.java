@@ -62,9 +62,12 @@ public class Database {
                 + ");");
 
         try (Connection connection = getConnection()) {
-            Statement stmt = connection.createStatement();
-            for (String sqlStatement : createTables) {
-                stmt.execute(sqlStatement);
+            try (Statement stmt = connection.createStatement()) {
+                for (String sqlStatement : createTables) {
+                    stmt.execute(sqlStatement);
+                }
+            } catch (SQLException e) {
+                System.err.println("SQL ERROR: " + e.getMessage());
             }
         } catch (SQLException e) {
             System.err.println("SQL ERROR: " + e.getMessage());
@@ -93,9 +96,12 @@ public class Database {
         insertDemoData.add("INSERT INTO user(username) VALUES('Niklas123'),('Max1'),('Muster12345')");
         insertDemoData.add("INSERT INTO recipe(recipeName, username) VALUES('Pizza','family', 45, '1. Teig dann backen','Niklas123')");
         try (Connection connection = getConnection()) {
-            Statement stmt = connection.createStatement();
-            for (String sqlStatement : insertDemoData) {
-                stmt.execute(sqlStatement);
+            try (Statement stmt = connection.createStatement()) {
+                for (String sqlStatement : insertDemoData) {
+                    stmt.execute(sqlStatement);
+                }
+            } catch (SQLException e) {
+                System.err.println("SQL ERROR: " + e.getMessage());
             }
         } catch (SQLException e) {
             System.err.println("SQL ERROR: " + e.getMessage());
