@@ -30,7 +30,7 @@ public class ReviewRepositoryImplementation implements ReviewRepository {
             return reviewList;
 
         } catch (SQLException e) {
-            e.printStackTrace();
+            System.err.println("SQL ERROR: " + e.getMessage());;
             return null;
         }
     }
@@ -46,7 +46,7 @@ public class ReviewRepositoryImplementation implements ReviewRepository {
                 return null;
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+            System.err.println("SQL ERROR: " + e.getMessage());;
             return null;
         }
 
@@ -59,7 +59,7 @@ public class ReviewRepositoryImplementation implements ReviewRepository {
             preparedStmt.executeUpdate();
             return review;
         } catch (SQLException e) {
-            e.printStackTrace();
+            System.err.println("SQL ERROR: " + e.getMessage());;
             return null;
         }
     }
@@ -72,7 +72,7 @@ public class ReviewRepositoryImplementation implements ReviewRepository {
             preparedStmt.setString(2, username);
             preparedStmt.executeUpdate();
         } catch (SQLException e) {
-            e.printStackTrace();
+            System.err.println("SQL ERROR: " + e.getMessage());;
         }
     }
 }

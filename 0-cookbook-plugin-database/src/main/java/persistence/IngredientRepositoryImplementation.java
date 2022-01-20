@@ -29,7 +29,7 @@ public class IngredientRepositoryImplementation implements IngredientRepository 
             return ingredientList;
 
         } catch (SQLException e) {
-            e.printStackTrace();
+            System.err.println("SQL ERROR: " + e.getMessage());;
             return null;
         }
     }
@@ -46,7 +46,7 @@ public class IngredientRepositoryImplementation implements IngredientRepository 
                 return null;
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+            System.err.println("SQL ERROR: " + e.getMessage());;
             return null;
         }
 
@@ -59,7 +59,7 @@ public class IngredientRepositoryImplementation implements IngredientRepository 
             preparedStmt.executeUpdate();
             return ingredient;
         } catch (SQLException e) {
-            e.printStackTrace();
+            System.err.println("SQL ERROR: " + e.getMessage());;
             return null;
         }
     }
@@ -73,7 +73,7 @@ public class IngredientRepositoryImplementation implements IngredientRepository 
             preparedStmt.setString(2, ingredientName);
             preparedStmt.executeUpdate();
         } catch (SQLException e) {
-            e.printStackTrace();
+            System.err.println("SQL ERROR: " + e.getMessage());;
         }
     }
 }

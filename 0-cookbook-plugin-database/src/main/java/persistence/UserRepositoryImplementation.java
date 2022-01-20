@@ -48,7 +48,7 @@ public class UserRepositoryImplementation implements UserRepository {
             return user;
 
         } catch (SQLException e) {
-            e.printStackTrace();
+            System.err.println("SQL ERROR: " + e.getMessage());;
             return null;
         }
     }
@@ -62,7 +62,7 @@ public class UserRepositoryImplementation implements UserRepository {
             System.out.println("Saved user:" + user.getUsername());
             return user;
         } catch (SQLException e) {
-            e.printStackTrace();
+            System.err.println("SQL ERROR: " + e.getMessage());;
             return null;
         }
     }

@@ -33,7 +33,7 @@ public class RecipeRepositoryImplementation implements RecipeRepository {
             }
             return recipeList;
         } catch (SQLException e) {
-            e.printStackTrace();
+            System.err.println("SQL ERROR: " + e.getMessage());;
             return null;
         }
     }
@@ -57,7 +57,7 @@ public class RecipeRepositoryImplementation implements RecipeRepository {
             }
             return recipe;
         } catch (SQLException e) {
-            e.printStackTrace();
+            System.err.println("SQL ERROR: " + e.getMessage());;
             return null;
         }
     }
@@ -86,7 +86,7 @@ public class RecipeRepositoryImplementation implements RecipeRepository {
             }
             return recipe;
         } catch (SQLException e) {
-            e.printStackTrace();
+            System.err.println("SQL ERROR: " + e.getMessage());;
             return null;
         }
     }
@@ -98,7 +98,7 @@ public class RecipeRepositoryImplementation implements RecipeRepository {
             preparedStmt.setLong(1, recipeId);
             preparedStmt.executeUpdate();
         } catch (SQLException e) {
-            e.printStackTrace();
+            System.err.println("SQL ERROR: " + e.getMessage());;
         }
     }
 
@@ -123,7 +123,7 @@ public class RecipeRepositoryImplementation implements RecipeRepository {
             return recipeList;
 
         } catch (SQLException e) {
-            e.printStackTrace();
+            System.err.println("SQL ERROR: " + e.getMessage());;
             return null;
         }
     }
@@ -144,7 +144,7 @@ public class RecipeRepositoryImplementation implements RecipeRepository {
             return new Recipe(id, recipeName, category, cookingTime, cookingInstruction, ingredients, reviews);
 
         } catch (SQLException e) {
-            e.printStackTrace();
+            System.err.println("SQL ERROR: " + e.getMessage());;
             return null;
         }
     }

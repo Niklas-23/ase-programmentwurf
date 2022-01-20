@@ -25,14 +25,14 @@ public class CookbookApplication {
             // Set cross-platform Java L&F (also called "Metal")
             UIManager.setLookAndFeel(UIManager.getCrossPlatformLookAndFeelClassName());
         } catch (Exception e) {
-            e.printStackTrace();
+            System.err.println("SQL ERROR: " + e.getMessage());;
         }
         EventQueue.invokeLater(() -> {
             try {
                 JFrame frame = new CookbookUI(cookbook);
                 frame.setVisible(true);
             } catch (Exception e) {
-                e.printStackTrace();
+                System.err.println("SQL ERROR: " + e.getMessage());;
             }
         });
 
