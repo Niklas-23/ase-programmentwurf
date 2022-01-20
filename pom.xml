@@ -34,17 +34,6 @@
 			<version>5.3.0</version>
 			<scope>test</scope>
 		</dependency>
-		<dependency>
-			<groupId>org.jacoco</groupId>
-			<artifactId>jacoco-maven-plugin</artifactId>
-			<exclusions>
-				<exclusion>
-					<groupId>org.junit.vintage</groupId>
-					<artifactId>junit-vintage-engine</artifactId>
-				</exclusion>
-			</exclusions>
-			<version>0.8.7</version>
-		</dependency>
 	</dependencies>
 	<build>
 		<plugins>
