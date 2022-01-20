@@ -28,3 +28,7 @@ hs_err_pid*
 
 # Database
 *.db
+
+3-cookbook-domain/target
+
+

@@ -1,0 +1,11 @@
+Recipe\Recipe.class
+Review\ReviewRepository.class
+Recipe\RecipeRepository.class
+Review\Review.class
+User\UserRepository.class
+Ingredient\Unit.class
+Review\ReviewStar.class
+User\User.class
+Ingredient\IngredientRepository.class
+Ingredient\Ingredient.class
+Recipe\Category.class
