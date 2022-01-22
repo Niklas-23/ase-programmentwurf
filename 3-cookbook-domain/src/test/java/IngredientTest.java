@@ -9,7 +9,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 public class IngredientTest {
 
     @Test
-    public void createIngredient(){
+    void createIngredient() {
         Ingredient ingredient = new Ingredient("salt", 1.0, Unit.PINCH);
         assertAll("ingredient",
                 () -> assertEquals("salt", ingredient.getIngredientName()),
@@ -19,13 +19,13 @@ public class IngredientTest {
     }
 
     @Test
-    public void convertMilliliterToLiter(){
+    void convertMilliliterToLiter() {
         Ingredient ingredient = new Ingredient("water", 1500, Unit.MILLILITER);
         assertEquals(1.5, ingredient.getAmount());
     }
 
     @Test
-    public void convertGramToKilo(){
+    void convertGramToKilo() {
         Ingredient ingredient = new Ingredient("potatoes", 2500, Unit.GRAM);
         assertEquals(2.5, ingredient.getAmount());
     }
