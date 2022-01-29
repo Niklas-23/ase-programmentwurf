@@ -44,7 +44,7 @@ public class RecipeServiceTest {
 
     @Test
     void testRecipeSearchCaseIgnore() {
-        List<Recipe> searchResult = recipeService.combinedSearch("Recipe_ONE_Name");
+        List<Recipe> searchResult = recipeService.searchRecipesByName("Recipe_ONE_Name");
         assertAll("recipe search",
                 () -> assertEquals(1, searchResult.size()),
                 () -> assertEquals("recipe_one_name", searchResult.get(0).getRecipeName()),
