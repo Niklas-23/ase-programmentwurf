@@ -14,7 +14,7 @@ import java.util.List;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
-public class RecipeServiceTest {
+class RecipeServiceTest {
 
     private RecipeService recipeService;
     private AuthorizationService auth;
