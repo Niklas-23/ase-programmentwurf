@@ -14,7 +14,7 @@ import java.util.List;
 import static org.junit.jupiter.api.Assertions.assertAll;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-public class RecipeTest {
+class RecipeTest {
 
     private Recipe recipe;
 
@@ -27,16 +27,16 @@ public class RecipeTest {
     private final Review review = new Review("test_user", "review text", ReviewStar.FIVE);
 
     @BeforeEach
-    public void beforeEachTest(){
+    void beforeEachTest() {
         List<Ingredient> ingredientList = new ArrayList<>();
         List<Review> reviewList = new ArrayList<>();
         ingredientList.add(ingredient);
         reviewList.add(review);
-        recipe = new Recipe(id,name, category,time, instruction, ingredientList, reviewList );
+        recipe = new Recipe(id, name, category, time, instruction, ingredientList, reviewList);
     }
 
     @Test
-    public void createRecipe(){
+    void createRecipe() {
         assertAll("recipe",
                 () -> assertEquals(id, recipe.getId()),
                 () -> assertEquals(name, recipe.getRecipeName()),
@@ -49,7 +49,7 @@ public class RecipeTest {
     }
 
     @Test
-    public void updateRecipeName(){
+    void updateRecipeName() {
         recipe.setRecipeName("");
         assertEquals(name, recipe.getRecipeName());
         recipe.setRecipeName("Burger");
@@ -57,7 +57,7 @@ public class RecipeTest {
     }
 
     @Test
-    public void updateCookingInstruction(){
+    void updateCookingInstruction() {
         recipe.setCookingInstruction("");
         assertEquals(instruction, recipe.getCookingInstruction());
         recipe.setCookingInstruction("updated cooking instruction");
@@ -65,7 +65,7 @@ public class RecipeTest {
     }
 
     @Test
-    public void updateCookingTime(){
+    void updateCookingTime() {
         recipe.setCookingInstruction("");
         assertEquals(time, recipe.getCookingTime());
         recipe.setCookingTime(5);
