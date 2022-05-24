@@ -10,10 +10,9 @@ import java.awt.*;
 public class CookbookApplication {
 
     public static void main(String[] args) {
-        Database.setupDatabase();
-        RecipeRepositoryImplementation recipeRepository = new RecipeRepositoryImplementation();
         UserRepositoryImplementation userRepository = new UserRepositoryImplementation();
-        ReviewRepositoryImplementation reviewRepository = new ReviewRepositoryImplementation();
+        RecipeRepositoryImplementation recipeRepository = new RecipeRepositoryImplementation(userRepository);
+        ReviewRepositoryImplementation reviewRepository = new ReviewRepositoryImplementation(recipeRepository);
 
         Cookbook cookbook = new Cookbook(userRepository, recipeRepository, reviewRepository);
         UserUiModel user = null;
