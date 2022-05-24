@@ -1,151 +1,77 @@
 package persistence;
 
-import Ingredient.Ingredient;
 import Recipe.Recipe;
 import Recipe.RecipeRepository;
-import Review.Review;
-import Recipe.Category;
+import User.User;
 
-import java.sql.*;
 import java.util.*;
 
 public class RecipeRepositoryImplementation implements RecipeRepository {
 
-    private final IngredientRepositoryImplementation ingredientRepository = new IngredientRepositoryImplementation();
-    private final ReviewRepositoryImplementation reviewRepository = new ReviewRepositoryImplementation();
+    private UserRepositoryImplementation userRepositoryImplementation;
+    private long nextRecipeId = 0;
+
+    public RecipeRepositoryImplementation(UserRepositoryImplementation userRepositoryImplementation) {
+        this.userRepositoryImplementation = userRepositoryImplementation;
+        nextRecipeId = findAllRecipes().size();
+    }
 
     @Override
     public List<Recipe> findAllRecipes() {
-        String sqlStatement = "SELECT * FROM recipe";
         List<Recipe> recipeList = new ArrayList<>();
-        try (Connection connection = Database.getConnection(); Statement stmt = connection.createStatement()) {
-            ResultSet resultSet = stmt.executeQuery(sqlStatement);
-            while (resultSet.next()) {
-                long id = resultSet.getLong("id");
-                String recipeName = resultSet.getString("recipeName");
-                Category category = Category.valueOf(resultSet.getString("category"));
-                int cookingTime = resultSet.getInt("cookingTime");
-                String cookingInstruction = resultSet.getString("cookingInstruction");
-                List<Ingredient> ingredients = ingredientRepository.findAllIngredientsByRecipeId(id);
-                List<Review> reviews = reviewRepository.findAllReviewsByRecipeId(id);
-                Recipe recipe = new Recipe(id, recipeName, category, cookingTime, cookingInstruction, ingredients, reviews);
-                recipeList.add(recipe);
-            }
-            return recipeList;
-        } catch (SQLException e) {
-            System.err.println("SQL ERROR: " + e.getMessage());;
-            return null;
-        }
+        userRepositoryImplementation.getUserMap().forEach((key, value) -> {
+            recipeList.addAll(value.getRecipes());
+        });
+        return recipeList;
     }
-
 
     @Override
     public Recipe save(Recipe recipe, String username) {
-        String sqlStatement = "INSERT INTO recipe (recipeName, category, cookingTime, cookingInstruction, username) VALUES (?,?,?,?,?)";
-        try (Connection connection = Database.getConnection(); PreparedStatement preparedStmt = connection.prepareStatement(sqlStatement)) {
-            preparedStmt.setString(1, recipe.getRecipeName());
-            preparedStmt.setString(2, recipe.getCategory().name());
-            preparedStmt.setInt(3, recipe.getCookingTime());
-            preparedStmt.setString(4, recipe.getCookingInstruction());
-            preparedStmt.setString(5, username);
-            preparedStmt.executeUpdate();
-            for (Ingredient i : recipe.getIngredients()) {
-                ingredientRepository.save(i, recipe.getId());
-            }
-            for (Review r : recipe.getReviews()) {
-                reviewRepository.save(r, recipe.getId());
-            }
-            return recipe;
-        } catch (SQLException e) {
-            System.err.println("SQL ERROR: " + e.getMessage());;
-            return null;
-        }
+        Recipe modifiedRecipe = new Recipe(nextRecipeId, recipe.getRecipeName(), recipe.getCategory(), recipe.getCookingTime(), recipe.getCookingInstruction(), recipe.getIngredients(), recipe.getReviews());
+        userRepositoryImplementation.getUserMap().get(username).getRecipes().add(modifiedRecipe);
+        nextRecipeId++;
+        return modifiedRecipe;
     }
 
     @Override
     public Recipe update(Recipe recipe) {
-        String sqlStatement = "UPDATE recipe SET recipeName=?, category=?, cookingTime=?, cookingInstruction=? WHERE id=?";
-        try (Connection connection = Database.getConnection(); PreparedStatement preparedStmt = connection.prepareStatement(sqlStatement)) {
-            preparedStmt.setString(1, recipe.getRecipeName());
-            preparedStmt.setString(2, recipe.getCategory().name());
-            preparedStmt.setInt(3, recipe.getCookingTime());
-            preparedStmt.setString(4, recipe.getCookingInstruction());
-            preparedStmt.setLong(5, recipe.getId());
-            preparedStmt.executeUpdate();
-            List<Ingredient> existingIngredients = ingredientRepository.findAllIngredientsByRecipeId(recipe.getId());
-            for (Ingredient i : existingIngredients) {
-                if (!recipe.getIngredients().contains(i)) {
-                    ingredientRepository.delete(i.getIngredientName(), recipe.getId());
+        for (Map.Entry<String, User> entry : userRepositoryImplementation.getUserMap().entrySet()) {
+            for (int i = 0; i < entry.getValue().getRecipes().size(); i++) {
+                if (entry.getValue().getRecipes().get(i).getId() == recipe.getId()) {
+                    Recipe oldRecipe = entry.getValue().getRecipes().get(i);
+                    Recipe modifiedRecipe = new Recipe(oldRecipe.getId(), recipe.getRecipeName(), recipe.getCategory(), recipe.getCookingTime(), recipe.getCookingInstruction(), recipe.getIngredients(), recipe.getReviews());
+                    entry.getValue().getRecipes().set(i, modifiedRecipe);
+                    return modifiedRecipe;
                 }
             }
-            for (Ingredient i : recipe.getIngredients()) {
-                ingredientRepository.save(i, recipe.getId());
-            }
-            for (Review r : recipe.getReviews()) {
-                reviewRepository.save(r, recipe.getId());
-            }
-            return recipe;
-        } catch (SQLException e) {
-            System.err.println("SQL ERROR: " + e.getMessage());;
-            return null;
         }
+        return null;
     }
 
     @Override
     public void delete(long recipeId) {
-        String sqlStatement = "DELETE FROM recipe WHERE recipeId=?";
-        try (Connection connection = Database.getConnection(); PreparedStatement preparedStmt = connection.prepareStatement(sqlStatement)) {
-            preparedStmt.setLong(1, recipeId);
-            preparedStmt.executeUpdate();
-        } catch (SQLException e) {
-            System.err.println("SQL ERROR: " + e.getMessage());;
+        for (Map.Entry<String, User> entry : userRepositoryImplementation.getUserMap().entrySet()) {
+            for (int i = 0; i < entry.getValue().getRecipes().size(); i++) {
+                if (entry.getValue().getRecipes().get(i).getId() == recipeId) {
+                    entry.getValue().getRecipes().remove(i);
+                }
+            }
         }
     }
 
     @Override
     public List<Recipe> findRecipesByUser(String username) {
-        String sqlStatement = "SELECT * FROM recipe WHERE username = ?";
-        try (Connection connection = Database.getConnection(); PreparedStatement preparedStmt = connection.prepareStatement(sqlStatement)) {
-            preparedStmt.setString(1, username);
-            ResultSet resultSet = preparedStmt.executeQuery();
-            List<Recipe> recipeList = new ArrayList<>();
-            while (resultSet.next()) {
-                int id = resultSet.getInt("id");
-                String recipeName = resultSet.getString("recipeName");
-                Category category = Category.valueOf(resultSet.getString("category"));
-                int cookingTime = resultSet.getInt("cookingTime");
-                String cookingInstruction = resultSet.getString("cookingInstruction");
-                List<Ingredient> ingredients = ingredientRepository.findAllIngredientsByRecipeId(id);
-                List<Review> reviews = reviewRepository.findAllReviewsByRecipeId(id);
-                Recipe recipe = new Recipe(id, recipeName, category, cookingTime, cookingInstruction, ingredients, reviews);
-                recipeList.add(recipe);
-            }
-            return recipeList;
-
-        } catch (SQLException e) {
-            System.err.println("SQL ERROR: " + e.getMessage());;
-            return null;
-        }
+        return userRepositoryImplementation.getUserMap().get(username).getRecipes();
     }
 
     @Override
     public Recipe findRecipeById(long id) {
-        String sqlStatement = "SELECT * FROM recipe WHERE id = ?";
-        try (Connection connection = Database.getConnection(); PreparedStatement preparedStmt = connection.prepareStatement(sqlStatement)) {
-            preparedStmt.setLong(1, id);
-            ResultSet resultSet = preparedStmt.executeQuery();
-            resultSet.next();
-            String recipeName = resultSet.getString("recipeName");
-            Category category = Category.valueOf(resultSet.getString("category"));
-            int cookingTime = resultSet.getInt("cookingTime");
-            String cookingInstruction = resultSet.getString("cookingInstruction");
-            List<Ingredient> ingredients = ingredientRepository.findAllIngredientsByRecipeId(id);
-            List<Review> reviews = reviewRepository.findAllReviewsByRecipeId(id);
-            return new Recipe(id, recipeName, category, cookingTime, cookingInstruction, ingredients, reviews);
-
-        } catch (SQLException e) {
-            System.err.println("SQL ERROR: " + e.getMessage());;
-            return null;
+        List<Recipe> recipeList = findAllRecipes();
+        for (int i = 0; i < recipeList.size(); i++) {
+            if (recipeList.get(i).getId() == id) {
+                return recipeList.get(i);
+            }
         }
+        return null;
     }
 }
