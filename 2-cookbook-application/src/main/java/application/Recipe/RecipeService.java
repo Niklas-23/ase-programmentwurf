@@ -79,21 +79,25 @@ public class RecipeService {
     public List<Recipe> getAllRecipes() {
         return recipeRepository.findAllRecipes();
     }
-
-
+    
     /**
-     * Save a recipe or update a existing recipe.
+     * Save a new recipe.
      *
      * @param recipe the recipe to save or update
+     */
+    public void saveRecipe(Recipe recipe) {
+        recipeRepository.save(recipe, user.getUsername());
+    }
+
+    /**
+     * Update an existing recipe.
+     *
+     * @param recipe the updated recipe
      * @throws UnauthorizedException is thrown when the user is not authorized to update the recipe because he is not the creator
      */
-    public void saveRecipe(Recipe recipe) throws UnauthorizedException {
-        if (recipeRepository.findRecipeById(recipe.getId()) == null) {
-            recipeRepository.save(recipe, user.getUsername());
-        } else {
-            auth.checkAuthorization(recipe.getId());
-            recipeRepository.update(recipe);
-        }
+    public void updateRecipe(Recipe recipe) throws UnauthorizedException {
+        auth.checkAuthorization(recipe.getId());
+        recipeRepository.update(recipe);
     }
 
     /**
