@@ -20,7 +20,6 @@ public class ReviewService {
     public void writeReview(Review review, long recipeId) throws UnallowedReviewException {
         List<Review> existingReviews = reviewRepository.findAllReviewsByRecipeId(recipeId);
         for (Review r : existingReviews) {
-            System.out.println(r.getUsername());
             if (r.getUsername().equals(review.getUsername())) {
                 throw new UnallowedReviewException();
             }
