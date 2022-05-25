@@ -6,8 +6,6 @@ public interface RecipeRepository {
 
     List<Recipe> findAllRecipes();
 
-    List<Recipe> findRecipesByUser(String username);
-
     Recipe findRecipeById(long id);
 
     Recipe save(Recipe recipe, String username);
