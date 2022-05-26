@@ -30,8 +30,8 @@ class ReviewServiceTest {
         ReviewService reviewService = new ReviewService(reviewRepository, user);
         Review newReview = mock(Review.class);
         when(newReview.getUsername()).thenReturn("username_from_another_user");
-        assertDoesNotThrow(() -> reviewService.writeReview(newReview, 1));
+        assertDoesNotThrow(() -> reviewService.writeReviewForRecipe(newReview, 1));
         reviewList.add(newReview);
-        assertThrows(UnallowedReviewException.class, () -> reviewService.writeReview(newReview, 1));
+        assertThrows(UnallowedReviewException.class, () -> reviewService.writeReviewForRecipe(newReview, 1));
     }
 }

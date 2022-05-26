@@ -17,7 +17,7 @@ public class ReviewService {
         this.user = user;
     }
 
-    public void writeReview(Review review, long recipeId) throws UnallowedReviewException {
+    public void writeReviewForRecipe(Review review, long recipeId) throws UnallowedReviewException {
         List<Review> existingReviews = reviewRepository.findAllReviewsByRecipeId(recipeId);
         for (Review r : existingReviews) {
             if (r.getUsername().equals(review.getUsername())) {
