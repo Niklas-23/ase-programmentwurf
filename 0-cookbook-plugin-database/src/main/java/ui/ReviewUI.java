@@ -36,7 +36,7 @@ public class ReviewUI extends JFrame {
             ReviewStar reviewStar = reviewStarJComboBox.getItemAt(reviewStarJComboBox.getSelectedIndex());
             ReviewUiModel review = new ReviewUiModel(cookbook.getUserService().getUser().getUsername(), reviewText, reviewStar);
             try {
-                cookbook.getReviewService().writeReview(reviewUiModelToReviewMapper.apply(review), recipe.getId());
+                cookbook.getReviewService().writeReviewForRecipe(reviewUiModelToReviewMapper.apply(review), recipe.getId());
                 //After saving the new review, the review is manually added to the list presented in the ui.
                 //Refreshing the list would require saving the currently selected recipe and reopening the recipe after refreshing.
                 recipe.getReviews().add(review);

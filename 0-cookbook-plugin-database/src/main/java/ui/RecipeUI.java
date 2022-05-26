@@ -15,6 +15,7 @@ public class RecipeUI extends JFrame {
     private final Cookbook cookbook;
     private final CookbookUI cookbookUI;
     private RecipeUiModel recipe;
+    private boolean isNewRecipe;
 
     private final JTextField recipeNameText;
     private final JComboBox<Category> recipeCategoryText;
@@ -132,12 +133,14 @@ public class RecipeUI extends JFrame {
     private void initializeRecipe() {
         if (recipe == null) {
             recipe = new RecipeUiModel(0, "", Category.FAMILY, "", "", new ArrayList<>(), new ArrayList<>());
+            isNewRecipe = true;
         } else {
             recipeNameText.setText(recipe.getRecipeName());
             recipeCategoryText.setSelectedItem(recipe.getCategory());
             cookingTimeText.setText(recipe.getCookingTime());
             cookingInstructionText.setText(recipe.getCookingInstruction());
             updateIngredientListModel();
+            isNewRecipe = false;
         }
     }
 
@@ -151,12 +154,20 @@ public class RecipeUI extends JFrame {
         String cookingInstruction = cookingInstructionText.getText();
 
         RecipeUiModel updatedRecipe = new RecipeUiModel(recipe.getId(), recipeName, recipeCategory, cookingTime, cookingInstruction, recipe.getIngredients(), recipe.getReviews());
-        try {
+
+        if (isNewRecipe) {
             cookbook.getRecipeService().saveRecipe(recipeUiModelToRecipeMapper.apply(updatedRecipe));
             closeWindow(true);
-        } catch (UnauthorizedException e) {
-            JOptionPane.showMessageDialog(null, "You are not authorized to modify this recipe");
+        } else {
+            try {
+                cookbook.getRecipeService().updateRecipe(recipeUiModelToRecipeMapper.apply(updatedRecipe));
+                closeWindow(true);
+            } catch (UnauthorizedException e) {
+                JOptionPane.showMessageDialog(null, "You are not authorized to modify this recipe");
+            }
         }
+
+
     }
 
     /**

@@ -60,11 +60,6 @@ public class RecipeRepositoryImplementation implements RecipeRepository {
     }
 
     @Override
-    public List<Recipe> findRecipesByUser(String username) {
-        return userRepositoryImplementation.getUserMap().get(username).getRecipes();
-    }
-
-    @Override
     public Recipe findRecipeById(long id) {
         List<Recipe> recipeList = findAllRecipes();
         for (int i = 0; i < recipeList.size(); i++) {

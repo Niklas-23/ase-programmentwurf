@@ -83,23 +83,18 @@ class RecipeServiceTest {
     }
 
     @Test
-    void testSaveRecipe() throws UnauthorizedException {
-        //Save new recipe
-        Recipe newRecipe = mock(Recipe.class);
-        when(newRecipe.getId()).thenReturn((long) 33);
-        doNothing().when(auth).checkAuthorization(any(Long.class));
-        assertDoesNotThrow(() -> recipeService.saveRecipe(newRecipe));
-
+    void testUpdateRecipe() throws UnauthorizedException {
         //Update recipe
         Recipe updateRecipe = mock(Recipe.class);
         when(updateRecipe.getId()).thenReturn((long) 33);
         doNothing().when(auth).checkAuthorization(any(Long.class));
-        assertDoesNotThrow(() -> recipeService.saveRecipe(updateRecipe));
+        assertDoesNotThrow(() -> recipeService.updateRecipe(updateRecipe));
 
         //Update recipe from other user
         Recipe recipeFromOtherUser = mock(Recipe.class);
         when(recipeFromOtherUser.getId()).thenReturn((long) 11);
         doThrow(UnauthorizedException.class).when(auth).checkAuthorization(any(Long.class));
-        assertThrows(UnauthorizedException.class, () -> recipeService.saveRecipe(recipeFromOtherUser));
+        assertThrows(UnauthorizedException.class, () -> recipeService.updateRecipe(recipeFromOtherUser));
+
     }
 }

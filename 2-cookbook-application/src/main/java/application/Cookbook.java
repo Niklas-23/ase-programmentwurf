@@ -35,9 +35,7 @@ public class Cookbook {
     public User login(String username) throws UserDoesNotExistException {
         User user = userRepository.findUserByUsername(username);
         if (user != null) {
-            currentUser = user;
-            initiateServices();
-            return currentUser;
+            return startCookbookForUser(user);
         } else {
             throw new UserDoesNotExistException();
         }
@@ -49,10 +47,14 @@ public class Cookbook {
         } else {
             User user = new User(username, new ArrayList<>());
             userRepository.save(user);
-            currentUser = user;
-            initiateServices();
-            return currentUser;
+            return startCookbookForUser(user);
         }
+    }
+
+    private User startCookbookForUser(User user) {
+        currentUser = user;
+        initiateServices();
+        return currentUser;
     }
 
     private void initiateServices() {
