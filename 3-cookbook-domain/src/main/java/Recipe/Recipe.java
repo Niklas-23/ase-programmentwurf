@@ -81,8 +81,7 @@ public class Recipe implements Cloneable {
         try {
             clone = (Recipe) super.clone();
             clone.id = id;
-        } catch (CloneNotSupportedException e) {
-            e.printStackTrace();
+        } catch (CloneNotSupportedException ignored) {
         }
         return clone;
     }
