@@ -15,6 +15,7 @@ import Review.ReviewStar;
 import javax.swing.*;
 import java.awt.EventQueue;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public class CookbookApplication {
@@ -27,12 +28,8 @@ public class CookbookApplication {
         List<Ingredient> ingredientList = new ArrayList<>();
         ingredientList.add(ingredient1);
         ingredientList.add(ingredient2);
-        Recipe recipe1 = CreateRecipe.identity(0).named("Pizza").inCategory(Category.FAMILY).cookingTime(30).instruction("Hier steht die Kochanleitung").ingredientList(ingredientList).reviewList(new ArrayList<Review>() {{
-            add(review1);
-        }});
-        Recipe recipe2 = CreateRecipe.identity(1).named("Burger").inCategory(Category.FAMILY).cookingTime(30).instruction("Hier steht die Kochanleitung").ingredientList(ingredientList).reviewList(new ArrayList<Review>() {{
-            add(review2);
-        }});
+        Recipe recipe1 = CreateRecipe.identity(0).named("Pizza").inCategory(Category.FAMILY).cookingTime(30).instruction("Hier steht die Kochanleitung").ingredientList(ingredientList).reviewList(new ArrayList<>(Arrays.asList(review1)));
+        Recipe recipe2 = CreateRecipe.identity(1).named("Burger").inCategory(Category.FAMILY).cookingTime(30).instruction("Hier steht die Kochanleitung").ingredientList(ingredientList).reviewList(new ArrayList<>(Arrays.asList(review2)));
         List<Recipe> recipeList = new ArrayList<>();
         recipeList.add(recipe1);
         recipeList.add(recipe2);
