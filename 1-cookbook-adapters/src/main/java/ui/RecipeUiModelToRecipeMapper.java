@@ -1,6 +1,7 @@
 package ui;
 
 import Recipe.Recipe;
+import Recipe.CreateRecipe;
 
 import java.util.function.Function;
 import java.util.stream.Collectors;
@@ -16,14 +17,12 @@ public class RecipeUiModelToRecipeMapper implements Function<RecipeUiModel, Reci
     }
 
     private Recipe map(RecipeUiModel recipe) {
-        return new Recipe(
-                recipe.getId(),
-                recipe.getRecipeName(),
-                recipe.getCategory(),
-                Integer.parseInt(recipe.getCookingTime()),
-                recipe.getCookingInstruction(),
-                recipe.getIngredients().stream().map(ingredientUiModelToIngredientMapper).collect(Collectors.toList()),
-                recipe.getReviews().stream().map(reviewUiModelToReviewMapper).collect(Collectors.toList())
-        );
+        return CreateRecipe.identity(recipe.getId())
+                .named(recipe.getRecipeName())
+                .inCategory(recipe.getCategory())
+                .cookingTime(Integer.parseInt(recipe.getCookingTime()))
+                .instruction(recipe.getCookingInstruction())
+                .ingredientList(recipe.getIngredients().stream().map(ingredientUiModelToIngredientMapper).collect(Collectors.toList()))
+                .reviewList(recipe.getReviews().stream().map(reviewUiModelToReviewMapper).collect(Collectors.toList()));
     }
 }
