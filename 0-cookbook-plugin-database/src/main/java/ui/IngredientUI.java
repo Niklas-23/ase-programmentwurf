@@ -18,7 +18,7 @@ public class IngredientUI extends JFrame {
         ingredientPanel.setLayout(new GridLayout(3, 2));
         JLabel ingredientNameLabel = new JLabel("Ingredient name:");
         JTextField ingredientNameText = new JTextField();
-        JLabel amountLabel = new JLabel("Amount:");
+        JLabel amountLabel = new JLabel("Amount (use . and not ,):");
         JTextField amountText = new JTextField();
         JLabel unitLabel = new JLabel("Unit:");
         JComboBox<Unit> unitComboBox = new JComboBox<>();

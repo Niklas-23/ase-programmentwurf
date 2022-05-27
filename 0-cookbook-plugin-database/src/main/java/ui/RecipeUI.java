@@ -52,7 +52,7 @@ public class RecipeUI extends JFrame {
         recipeCategoryText.setModel(recipeCategoryModel);
         recipeInformationPanel.add(recipeCategoryLabel);
         recipeInformationPanel.add(recipeCategoryText);
-        JLabel cookingTimeLabel = new JLabel("Cooking time:");
+        JLabel cookingTimeLabel = new JLabel("Cooking time (minutes):");
         cookingTimeText = new JTextField();
         recipeInformationPanel.add(cookingTimeLabel);
         recipeInformationPanel.add(cookingTimeText);
