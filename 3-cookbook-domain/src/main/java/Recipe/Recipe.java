@@ -6,9 +6,9 @@ import java.util.List;
 import Review.Review;
 import Ingredient.Ingredient;
 
-public class Recipe {
+public class Recipe implements Cloneable {
 
-    private final long id;
+    private long id;
     private String recipeName;
     private Category category;
     private int cookingTime;
@@ -74,5 +74,15 @@ public class Recipe {
 
     public long getId() {
         return id;
+    }
+
+    public Recipe clone(long id) {
+        Recipe clone = null;
+        try {
+            clone = (Recipe) super.clone();
+            clone.id = id;
+        } catch (CloneNotSupportedException ignored) {
+        }
+        return clone;
     }
 }

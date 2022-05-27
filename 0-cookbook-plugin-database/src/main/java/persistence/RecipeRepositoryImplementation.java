@@ -27,7 +27,7 @@ public class RecipeRepositoryImplementation implements RecipeRepository {
 
     @Override
     public Recipe save(Recipe recipe, String username) {
-        Recipe modifiedRecipe = new Recipe(nextRecipeId, recipe.getRecipeName(), recipe.getCategory(), recipe.getCookingTime(), recipe.getCookingInstruction(), recipe.getIngredients(), recipe.getReviews());
+        Recipe modifiedRecipe = recipe.clone(nextRecipeId);
         userRepositoryImplementation.getUserMap().get(username).getRecipes().add(modifiedRecipe);
         nextRecipeId++;
         return modifiedRecipe;
@@ -39,7 +39,7 @@ public class RecipeRepositoryImplementation implements RecipeRepository {
             for (int i = 0; i < entry.getValue().getRecipes().size(); i++) {
                 if (entry.getValue().getRecipes().get(i).getId() == recipe.getId()) {
                     Recipe oldRecipe = entry.getValue().getRecipes().get(i);
-                    Recipe modifiedRecipe = new Recipe(oldRecipe.getId(), recipe.getRecipeName(), recipe.getCategory(), recipe.getCookingTime(), recipe.getCookingInstruction(), recipe.getIngredients(), recipe.getReviews());
+                    Recipe modifiedRecipe = recipe.clone(oldRecipe.getId());
                     entry.getValue().getRecipes().set(i, modifiedRecipe);
                     return modifiedRecipe;
                 }
