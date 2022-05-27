@@ -22,6 +22,7 @@ public final class CreateRecipe {
     public static CreateRecipe identity(long id) {
         return new CreateRecipe(id);
     }
+
     public CreateRecipe named(String recipeName) {
         this.recipeName = recipeName;
         return this;
@@ -53,6 +54,6 @@ public final class CreateRecipe {
     }
 
     private Recipe build() {
-        return new Recipe(-1, this.recipeName, this.category, this.cookingTime, this.cookingInstruction, this.ingredients, this.reviews);
+        return new Recipe(this.id, this.recipeName, this.category, this.cookingTime, this.cookingInstruction, this.ingredients, this.reviews);
     }
 }
