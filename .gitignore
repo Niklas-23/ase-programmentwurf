@@ -11,7 +11,6 @@
 .mtj.tmp/
 
 # Package Files #
-*.jar
 *.war
 *.nar
 *.ear
@@ -33,3 +32,4 @@ hs_err_pid*
 2-cookbook-application/target
 1-cookbook-adapters/target
 0-cookbook-plugin-database/target
+/target

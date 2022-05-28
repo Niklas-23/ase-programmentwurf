@@ -26,7 +26,12 @@ public class LoginUI {
             //Create new user
             String username = JOptionPane.showInputDialog("Enter your new username");
             try {
-                return userModelMapper.apply(cookbook.createNewUser(username));
+                if (username != null) {
+                    return userModelMapper.apply(cookbook.createNewUser(username));
+                } else {
+                    JOptionPane.showMessageDialog(null, "No username provided");
+                    return null;
+                }
             } catch (UserAlreadyExistsException e) {
                 JOptionPane.showMessageDialog(null, "User already exists");
                 return null;
