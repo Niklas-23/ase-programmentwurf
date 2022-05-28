@@ -16,7 +16,7 @@ To run the application you can download the .jar [file](Cookbook-1.0.jar).
 
 ### Testing
 
-To run all test navigate to the project root folder and run the command ```mvn test```.
+To run all tests navigate to the project root folder and run the command ```mvn test```.
 
 ### Compiling
 
